@@ -15,9 +15,9 @@ class walking_test:
 
 def loader(data_path, blacklist):
     data = []
-    all_data_csv = pd.read_csv(data_path + os.sep + 'all_data.csv')
+    all_data_csv = pd.read_csv(data_path + os.sep + 'metadata_tracks.csv')
     for name in os.listdir(data_path):
-        if name != '.DS_Store' and 'all_data' not in name:
+        if name != '.DS_Store' and 'csv' not in name:
             print('---------------------------------------------')
             print("Loading walking data for subject: ",name)
             new_path = data_path + os.sep + name
