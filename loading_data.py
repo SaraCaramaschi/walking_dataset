@@ -6,7 +6,10 @@ if __name__ == '__main__':
     # Loading data
     selection, info_all_tests = loaders_functions.loader(main_path + os.sep + 'data',
                                                          blacklist=running_settings.run_settings['blacklist'])
+    print("Successfully loaded data")
     # Visualizing data and baseline analysis
     analysis_functions.analysis_QSS_algorithm(info_all_tests)
 
-    print("Successfully loaded data")
+    print("Successfully visualized analysis data")
+
+

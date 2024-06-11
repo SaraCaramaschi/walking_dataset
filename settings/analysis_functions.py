@@ -433,19 +433,12 @@ def speed_investigation(info_all_tests):
     fig = plt.figure(figsize=(6, 5))
     import seaborn as sns
     ax = fig.add_subplot(111)
-    # sns.scatterplot(x='total_gaps_time_inertial', y='abs_perc_error', hue='path', data=info_all_tests, ax=ax, palette=running_settings.plots_settings['palette'])
     sns.scatterplot(x='average_walking_speed', y='abs_perc_error', data=info_all_tests, ax=ax, color=running_settings.plots_settings['color']['pastel_blue'])
-    # Adding regression line
-    # turn values into float 64 of info_all_tests[info_all_tests['total_gaps_time_inertial'].notna()]['total_gaps_time_inertial']
-    # and info_all_tests[info_all_tests['total_gaps_time_inertial'].notna()]['abs_error']
     gaps_inertial = info_all_tests[info_all_tests['average_walking_speed'].notna()]['average_walking_speed'].to_numpy()
     abs_error = info_all_tests[info_all_tests['average_walking_speed'].notna()]['abs_perc_error'].to_numpy()
     # abs error to float
     m, b = np.polyfit(gaps_inertial, abs_error, 1)
     ax.axline(xy1=(0, b), slope=m, color='black', linestyle='--') #  label=f'$y = {m:.1f}x {b:+.1f}$',
-    # handles, labels = ax.get_legend_handles_labels()
-    # ax.legend(handles, ['Straight', 'Gently curved', 'Curved', f'$y = {m:.1f}x {b:+.1f}$'], loc='lower right')
-    # print correlation values between total gaps time inertial and abs perc error
     print('Correlation between average_walking_speed and abs perc error: ',
           np.corrcoef(gaps_inertial, abs_error))
     ax.set_xlabel('Average_walking_speed [m/s]',
