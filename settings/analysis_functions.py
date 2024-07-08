@@ -4,6 +4,7 @@ import os
 import matplotlib
 import pandas as pd
 import pylab
+import numpy as np
 from scipy import stats
 from matplotlib import pyplot as plt
 from scipy.stats import *
@@ -188,7 +189,7 @@ def error_path_analysis(info_all_tests):
 
 
 def groundtruth_plotting(info_all_tests):
-    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(12, 5))
+    fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(12, 5), sharey=True)
     ax[0].hist(info_all_tests['distanceReference'],
                bins=20,
                color=running_settings.plots_settings['color']['pastel_blue'], rwidth=0.95)
@@ -322,7 +323,7 @@ def per_phone_error(info_all_tests):
     # multiple conditions extracted from info_all_test
 
     straight_info_test = info_all_tests[(info_all_tests['path curvature'] == 0)]
-    fig = plt.figure(figsize=(20, 18))
+    fig = plt.figure(figsize=(12, 5))
     # boxplot with hue the device column
     ax1 = fig.add_subplot(131)
     straight_info_test.boxplot(column='abs_perc_error', by='cluster_device', ax=ax1, patch_artist=True)
@@ -335,7 +336,7 @@ def per_phone_error(info_all_tests):
                              straight_info_test[straight_info_test['cluster_device'] == 'Samsung'].shape[0]),
                         'Xiaomi \n' + str(straight_info_test[straight_info_test['cluster_device'] == 'Xiaomi'].shape[0])
                         ])
-    ax1.set_title('Straight path tracks')
+    ax1.set_title('Straight path tracks', fontdict={'fontsize': running_settings.plots_settings['title_fontsize']})
 
     gently_curved_info_test = info_all_tests[(info_all_tests['path curvature'] == 1)]
     ax2 = fig.add_subplot(132)
@@ -353,13 +354,13 @@ def per_phone_error(info_all_tests):
                          'Samsung \n' + str(gently_curved_info_test[gently_curved_info_test['cluster_device'] == 'Samsung'].shape[0]),
                         'Xiaomi \n' + str(gently_curved_info_test[gently_curved_info_test['cluster_device'] == 'Xiaomi'].shape[0])
                         ])
-    ax2.set_title('Gently curved path tracks')
+    ax2.set_title('Gently curved path tracks', fontdict={'fontsize': running_settings.plots_settings['title_fontsize']})
 
     curved_info_test = info_all_tests[(info_all_tests['path curvature'] == 2)]
     curved_apple = curved_info_test[curved_info_test['cluster_device'] == 'Apple']
     curved_apple.abs_perc_error.std()
     ax3 = fig.add_subplot(133)
-    ax3.set_title('Curved path tracks')
+    ax3.set_title('Curved path tracks', fontdict={'fontsize': running_settings.plots_settings['title_fontsize']})
     curved_info_test.boxplot(column='abs_perc_error', by='cluster_device', ax=ax3, patch_artist=True)
     ax3.set_xticklabels([
         'Apple \n' + str(curved_info_test[curved_info_test['cluster_device'] == 'Apple'].shape[0]),
@@ -370,17 +371,20 @@ def per_phone_error(info_all_tests):
                         'Samsung \n' + str(curved_info_test[curved_info_test['cluster_device'] == 'Samsung'].shape[0]),
                         'Xiaomi \n' + str(curved_info_test[curved_info_test['cluster_device'] == 'Xiaomi'].shape[0])
                         ])
-    ax3.set_title('Curved path tracks')
+    ax3.set_title('Curved path tracks', fontdict={'fontsize': running_settings.plots_settings['title_fontsize']})
     # share y axis between subplots
     ax1.set_xlabel('')
     fig.suptitle('')
     ax2.set_xlabel('')
     ax3.set_xlabel('')
-    ax1.set_ylabel('Absolute % error QSS', fontdict={'fontsize': running_settings.plots_settings['label_fontsize']})
+    ax1.set_ylabel('Absolute % error QSS', fontdict={'fontsize': running_settings.plots_settings['title_fontsize']})
     ax1.sharey(ax2)
     ax2.sharey(ax1)
     ax3.sharey(ax1)
     plt.tight_layout()
+    # increase text size in the plot
+    plt.xticks(fontsize=running_settings.plots_settings['label_fontsize'])
+    plt.yticks(fontsize=running_settings.plots_settings['label_fontsize'])
     plt.savefig(running_settings.main_path + os.sep + 'images' + os.sep + 'per_phone_error.eps', dpi=1000, format='eps')
     pass
 
